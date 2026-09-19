@@ -1,0 +1,1 @@
+const express=require('express');const c=require('../controllers/wishlistController');const {protect}=require('../middleware/authMiddleware');const r=express.Router();r.use(protect);r.get('/',c.getWishlist);r.post('/',c.addProduct);r.delete('/:productId',c.removeProduct);module.exports=r;

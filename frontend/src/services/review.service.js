@@ -12,12 +12,9 @@ export const reviewService = {
     return api.get(`/reviews/${productId}${query ? `?${query}` : ''}`);
   },
 
-  createReview: (productId, data) =>
-    api.post(`/reviews/${productId}`, data),
+  createReview: (productId, data) => api.post(`/reviews/${productId}`, data),
 
-  updateReview: (id, data) =>
-    api.put(`/reviews/${id}`, data),
+  updateReview: (id, data) => api.put(`/reviews/${id}`, data),
 
-  deleteReview: (id) =>
-    api.delete(`/reviews/${id}`)
+  deleteReview: (id) => api.delete(`/reviews/${id}`),
 };

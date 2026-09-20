@@ -105,7 +105,9 @@ const Register = () => {
                 autoComplete="new-password"
                 disabled={loading}
               />
-              {errors.confirmPassword && <span className="errorText">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className="errorText">{errors.confirmPassword}</span>
+              )}
             </div>
 
             <button type="submit" className="btn authSubmit" disabled={loading}>

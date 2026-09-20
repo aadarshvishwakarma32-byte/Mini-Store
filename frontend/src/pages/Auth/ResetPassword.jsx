@@ -57,9 +57,18 @@ const ResetPassword = () => {
       <main className="main">
         <section className="page authPage">
           <div className="authCard">
-            <div className="skeletonLine w60" style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }} />
-            <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }} />
-            <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }} />
+            <div
+              className="skeletonLine w60"
+              style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }}
+            />
+            <div
+              className="skeletonLine w40"
+              style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }}
+            />
+            <div
+              className="skeletonLine w40"
+              style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }}
+            />
           </div>
         </section>
       </main>
@@ -74,7 +83,9 @@ const ResetPassword = () => {
             <div className="errorIcon">✕</div>
             <h1 className="pageTitle">Invalid Reset Link</h1>
             <p className="pageText">This password reset link is invalid or has expired.</p>
-            <Link to="/forgot-password" className="btn authSubmit">Request New Link</Link>
+            <Link to="/forgot-password" className="btn authSubmit">
+              Request New Link
+            </Link>
           </div>
         </section>
       </main>
@@ -114,7 +125,9 @@ const ResetPassword = () => {
                 autoComplete="new-password"
                 disabled={loading}
               />
-              {errors.confirmPassword && <span className="errorText">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className="errorText">{errors.confirmPassword}</span>
+              )}
             </div>
 
             <button type="submit" className="btn authSubmit" disabled={loading}>

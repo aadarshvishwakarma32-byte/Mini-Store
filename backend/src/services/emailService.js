@@ -5,7 +5,9 @@ const sendPasswordResetEmail = async ({ email, resetUrl }) => {
   // required. Set RESEND_API_KEY and MAIL_FROM in .env to enable delivery.
   if (!environment.RESEND_API_KEY) {
     if (environment.NODE_ENV !== 'production') {
-      console.info(`[password reset] Email delivery is not configured. Reset link for ${email}: ${resetUrl}`);
+      console.info(
+        `[password reset] Email delivery is not configured. Reset link for ${email}: ${resetUrl}`
+      );
     }
     return { delivered: false };
   }
@@ -18,7 +20,10 @@ const sendPasswordResetEmail = async ({ email, resetUrl }) => {
 
   const mailResponse = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${environment.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    headers: {
+      Authorization: `Bearer ${environment.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       from: environment.MAIL_FROM,
       to: [email],

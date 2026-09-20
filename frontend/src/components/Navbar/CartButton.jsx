@@ -1,3 +1,6 @@
+import { memo, useContext } from 'react';
+import { CartContext } from '../../context/CartContext.js';
+
 const iconProps = {
   width: 20,
   height: 20,
@@ -18,19 +21,22 @@ const CartIcon = () => (
   </svg>
 );
 
-const CartButton = ({ count, onClick }) => {
+const CartButtonInner = ({ onClick }) => {
+  const { cartCount } = useContext(CartContext);
   return (
     <button
       type="button"
       className="cartBtn"
       onClick={onClick}
-      aria-label={`Open cart, ${count} items`}
+      aria-label={`Open cart, ${cartCount} items`}
     >
-      <span className="cartIcon"><CartIcon /></span>
+      <span className="cartIcon">
+        <CartIcon />
+      </span>
       <span className="cartLabel">Cart</span>
-      <span className="cartCount">({count})</span>
+      <span className="cartCount">({cartCount})</span>
     </button>
   );
 };
 
-export default CartButton;
+export default memo(CartButtonInner);

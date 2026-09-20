@@ -8,5 +8,3 @@ createRoot(document.getElementById('root')).render(
     <AppProviders />
   </ErrorBoundary>
 );
-
-

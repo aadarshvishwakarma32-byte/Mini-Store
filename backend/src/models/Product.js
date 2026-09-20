@@ -41,6 +41,15 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    brand: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

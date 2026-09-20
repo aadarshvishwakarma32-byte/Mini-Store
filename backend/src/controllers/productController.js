@@ -19,7 +19,14 @@ const createProduct = async (req, res, next) => {
 const listProducts = async (req, res, next) => {
   try {
     const { page, limit, category, minPrice, maxPrice, search } = req.query;
-    const result = await productService.listProducts({ page, limit, category, minPrice, maxPrice, search });
+    const result = await productService.listProducts({
+      page,
+      limit,
+      category,
+      minPrice,
+      maxPrice,
+      search,
+    });
     return response.success(res, { data: result });
   } catch (err) {
     next(err);
@@ -80,7 +87,8 @@ const uploadProductImage = async (req, res, next) => {
 const createCategory = async (req, res, next) => {
   try {
     const { name, description, image } = req.body;
-    if (!name) return response.error(res, { message: 'Category name is required', statusCode: 400 });
+    if (!name)
+      return response.error(res, { message: 'Category name is required', statusCode: 400 });
 
     const existing = await categoryRepository.findByName(name);
     if (existing) throw new AppError('Category already exists', 409);

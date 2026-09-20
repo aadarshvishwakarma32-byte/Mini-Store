@@ -8,7 +8,10 @@ const findById = (id) => Category.findById(id);
 
 const findBySlug = (slug) => Category.findOne({ slug });
 
-const findByName = (name) => Category.findOne({ name: new RegExp(`^${name}$`, 'i') });
+const findByName = (name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return Category.findOne({ name: new RegExp(`^${escaped}$`, 'i') });
+};
 
 const findAll = (filter = {}) => Category.find(filter).sort({ name: 1 });
 

@@ -17,14 +17,14 @@ const Profile = () => {
       city: '',
       state: '',
       zipCode: '',
-      country: ''
-    }
+      country: '',
+    },
   });
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Profile = () => {
       setProfileData({
         name: user.name || '',
         phone: user.phone || '',
-        address: user.address || { street: '', city: '', state: '', zipCode: '', country: '' }
+        address: user.address || { street: '', city: '', state: '', zipCode: '', country: '' },
       });
     }
   }, [user]);
@@ -42,19 +42,19 @@ const Profile = () => {
     const { name, value } = e.target;
     if (name.startsWith('address.')) {
       const field = name.replace('address.', '');
-      setProfileData(prev => ({
+      setProfileData((prev) => ({
         ...prev,
-        address: { ...prev.address, [field]: value }
+        address: { ...prev.address, [field]: value },
       }));
     } else {
-      setProfileData(prev => ({ ...prev, [name]: value }));
+      setProfileData((prev) => ({ ...prev, [name]: value }));
     }
-    setErrors(prev => ({ ...prev, [name]: '' }));
+    setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
   const handlePasswordChange = (e) => {
-    setPasswordData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    setErrors(prev => ({ ...prev, [e.target.name]: '' }));
+    setPasswordData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
   };
 
   const validateProfile = () => {
@@ -69,7 +69,8 @@ const Profile = () => {
     if (!passwordData.currentPassword) newErrors.currentPassword = 'Current password required';
     if (!passwordData.newPassword) newErrors.newPassword = 'New password required';
     else if (passwordData.newPassword.length < 6) newErrors.newPassword = 'At least 6 characters';
-    if (passwordData.newPassword !== passwordData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    if (passwordData.newPassword !== passwordData.confirmPassword)
+      newErrors.confirmPassword = 'Passwords do not match';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -113,9 +114,18 @@ const Profile = () => {
     return (
       <main className="main">
         <section className="page">
-          <div className="skeletonLine w60" style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }} />
+          <div
+            className="skeletonLine w60"
+            style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }}
+          />
         </section>
       </main>
     );
@@ -129,19 +139,31 @@ const Profile = () => {
         <div className="profileTabs">
           <button
             className={`tabBtn ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('profile'); setErrors({}); setSuccess(''); }}
+            onClick={() => {
+              setActiveTab('profile');
+              setErrors({});
+              setSuccess('');
+            }}
           >
             Profile
           </button>
           <button
             className={`tabBtn ${activeTab === 'password' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('password'); setErrors({}); setSuccess(''); }}
+            onClick={() => {
+              setActiveTab('password');
+              setErrors({});
+              setSuccess('');
+            }}
           >
             Change Password
           </button>
         </div>
 
-        {success && <div className="status success" role="status">{success}</div>}
+        {success && (
+          <div className="status success" role="status">
+            {success}
+          </div>
+        )}
         {errors.form && <div className="status error">{errors.form}</div>}
 
         {activeTab === 'profile' && (
@@ -249,7 +271,9 @@ const Profile = () => {
                 placeholder="Enter current password"
                 autoComplete="current-password"
               />
-              {errors.currentPassword && <span className="errorText">{errors.currentPassword}</span>}
+              {errors.currentPassword && (
+                <span className="errorText">{errors.currentPassword}</span>
+              )}
             </div>
 
             <div className="field">
@@ -277,7 +301,9 @@ const Profile = () => {
                 placeholder="Confirm new password"
                 autoComplete="new-password"
               />
-              {errors.confirmPassword && <span className="errorText">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className="errorText">{errors.confirmPassword}</span>
+              )}
             </div>
 
             <button type="submit" className="btn authSubmit" disabled={loading}>

@@ -21,9 +21,18 @@ const Wishlist = () => {
       <main className="main">
         <section className="page">
           <h1 className="pageTitle">My Wishlist</h1>
-          <div className="skeletonLine w60" style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }} />
+          <div
+            className="skeletonLine w60"
+            style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }}
+          />
         </section>
       </main>
     );
@@ -42,7 +51,11 @@ const Wishlist = () => {
                 <div className="productImageWrap">
                   <img
                     className="productImage"
-                    src={item.image || item.images?.[0] || 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png'}
+                    src={
+                      item.image ||
+                      item.images?.[0] ||
+                      'https://cdn-icons-png.flaticon.com/512/3081/3081558.png'
+                    }
                     alt={item.name || item.title || 'Product'}
                   />
                 </div>

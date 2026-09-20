@@ -47,7 +47,16 @@ const initiatePayment = async (order, { method, upiId, cardLast4, cardNetwork, b
     redirectMode: 'POST',
     paymentFlow: {
       mode: method === 'upi_qr' ? 'QR_CODE' : 'UPI_COLLECT',
-      upiApp: method === 'phonepe' ? 'PHONEPE' : method === 'paytm' ? 'PAYTM' : method === 'gpay' ? 'GPay' : method === 'bhim' ? 'BHIM' : undefined,
+      upiApp:
+        method === 'phonepe'
+          ? 'PHONEPE'
+          : method === 'paytm'
+            ? 'PAYTM'
+            : method === 'gpay'
+              ? 'GPay'
+              : method === 'bhim'
+                ? 'BHIM'
+                : undefined,
     },
     paymentOptions: {
       upi: true,
@@ -108,15 +117,18 @@ const verifyPayment = async (merchantOrderRef) => {
 
   try {
     const response = await axios.get(`${X_VERIFY_URL}/${payment.merchantOrderRef}`, {
+      timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
         'X-Client-Id': PHONEPE.CLIENT_ID,
         'X-Client-Version': PHONEPE.CLIENT_VERSION,
-        'X-Checksum': `checksum`,
+        'X-Checksum': checksum,
       },
     });
 
-    const data = response.data?.response ? JSON.parse(Buffer.from(response.data.response, 'base64').toString()) : response.data;
+    const data = response.data?.response
+      ? JSON.parse(Buffer.from(response.data.response, 'base64').toString())
+      : response.data;
 
     if (data?.code === 'PAYMENT_SUCCESS') {
       await paymentRepository.markPaid(payment._id, data);
@@ -127,7 +139,21 @@ const verifyPayment = async (merchantOrderRef) => {
     await paymentRepository.updateStatus(payment._id, 'failed', { providerResponse: data });
     return { success: false, payment, gateway: data };
   } catch (err) {
-    await paymentRepository.updateStatus(payment._id, 'failed', { providerResponse: { error: err.message } });
+    if (err.code === 'ECONNABORTED' || err.code === 'ENOTFOUND' || err.code === 'ECONNRESET') {
+      await paymentRepository.updateStatus(payment._id, 'pending', {
+        providerResponse: {
+          error: err.message,
+          note: 'Verification network error, status retained as pending',
+        },
+      });
+      throw new AppError(
+        'Payment verification temporarily unavailable. Please check status later.',
+        503
+      );
+    }
+    await paymentRepository.updateStatus(payment._id, 'failed', {
+      providerResponse: { error: err.message },
+    });
     throw new AppError('Unable to verify payment with gateway', 500);
   }
 };
@@ -140,7 +166,12 @@ const refundPayment = async (paymentId, amount) => {
   if (!payment) throw new AppError('Payment not found', 404);
   if (payment.status !== 'success') throw new AppError('Payment not yet successful', 400);
 
-  await paymentRepository.updateStatus(payment._id, 'refunded', { providerResponse: { refundAmount: amount } });
+  await paymentRepository.updateStatus(payment._id, 'refunded', {
+    providerResponse: {
+      refundAmount: amount,
+      note: 'Refund processed locally; integrate provider refund API for actual settlement',
+    },
+  });
   return payment;
 };
 

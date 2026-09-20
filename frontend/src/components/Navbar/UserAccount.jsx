@@ -117,7 +117,9 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
           aria-expanded={open}
           aria-haspopup="true"
         >
-          <span className="userAccountIcon"><UserIcon /></span>
+          <span className="userAccountIcon">
+            <UserIcon />
+          </span>
           <span className="userAccountText">Welcome, {firstName}</span>
           <ChevronIcon className={open ? 'rotate' : ''} />
         </button>
@@ -131,9 +133,7 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
               transition={{ duration: 0.15 }}
             >
               <div className="dropdownHeader">
-                <div className="dropdownAvatar">
-                  {user?.name?.[0]?.toUpperCase() || 'U'}
-                </div>
+                <div className="dropdownAvatar">{user?.name?.[0]?.toUpperCase() || 'U'}</div>
                 <div>
                   <div className="dropdownName">{user?.name || 'User'}</div>
                   <div className="dropdownEmail">{user?.email || ''}</div>
@@ -141,7 +141,11 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
               </div>
               <div className="dropdownDivider" />
               {isAdmin && (
-                <Link to="/admin" className="dropdownItem adminDropdownLink" onClick={() => handleSelect('admin')}>
+                <Link
+                  to="/admin"
+                  className="dropdownItem adminDropdownLink"
+                  onClick={() => handleSelect('admin')}
+                >
                   <AdminPanelIcon />
                   Admin Panel
                 </Link>
@@ -150,7 +154,11 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
                 <UserIcon />
                 Profile
               </Link>
-              <Link to="/settings" className="dropdownItem" onClick={() => handleSelect('settings')}>
+              <Link
+                to="/settings"
+                className="dropdownItem"
+                onClick={() => handleSelect('settings')}
+              >
                 <SettingsIcon />
                 Settings
               </Link>
@@ -158,7 +166,11 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
                 <PackageIcon />
                 My Orders
               </Link>
-              <Link to="/wishlist" className="dropdownItem" onClick={() => handleSelect('wishlist')}>
+              <Link
+                to="/wishlist"
+                className="dropdownItem"
+                onClick={() => handleSelect('wishlist')}
+              >
                 <HeartIcon />
                 Wishlist
               </Link>
@@ -180,7 +192,9 @@ const UserAccount = ({ isAuthenticated, user, onLogout }) => {
 
   return (
     <Link to="/login" className="loginBtn">
-      <span className="loginIcon"><UserPlusIcon /></span>
+      <span className="loginIcon">
+        <UserPlusIcon />
+      </span>
       <span className="loginText">Hello, Sign in</span>
       <span className="loginSub">Account & Lists</span>
     </Link>

@@ -1,1 +1,12 @@
-const express=require('express');const c=require('../controllers/supportController');const {protect}=require('../middleware/authMiddleware');const r=express.Router();r.use(protect);r.post('/',c.create);r.get('/my',c.mine);r.get('/:id',c.one);module.exports=r;
+const express = require('express');
+const supportController = require('../controllers/supportController');
+const { protect } = require('../middleware/authMiddleware');
+
+const router = express.Router();
+
+router.use(protect);
+router.post('/', supportController.create);
+router.get('/my', supportController.mine);
+router.get('/:id', supportController.one);
+
+module.exports = router;

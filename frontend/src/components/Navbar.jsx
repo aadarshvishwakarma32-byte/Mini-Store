@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeContext } from '../theme/ThemeContext.jsx';
 import Cart from './Cart.jsx';
 import { useAuth } from '../hooks/useAuth.js';
-import { useCart } from '../hooks/useCart.js';
+import { CartContext } from '../context/CartContext.js';
 import Logo from './Navbar/Logo.jsx';
 import DeliveryLocation from './Navbar/DeliveryLocation.jsx';
 import CategorySelector from './Navbar/CategorySelector.jsx';
@@ -18,7 +19,6 @@ import MobileMenu from './Navbar/MobileMenu.jsx';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { cartCount, cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   const themeCtx = useContext(ThemeContext);
@@ -71,20 +71,24 @@ const Header = () => {
           <UserAccount isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout} />
           <AdminLink />
           <OrdersLink />
-          <CartButton count={cartCount} onClick={() => setIsCartOpen(true)} />
+          <CartButton onClick={() => setIsCartOpen(true)} />
         </div>
         <SecondaryNavbar onCategoryClick={() => setMobileMenuOpen(true)} />
-        {isCartOpen && (
-          <div className="cartOverlay" onMouseDown={onOutsideClick} onTouchStart={onOutsideTouch}>
-            <Cart
-              cartItems={cartItems}
-              onClose={() => setIsCartOpen(false)}
-              onInc={increaseQuantity}
-              onDec={decreaseQuantity}
-              onRemove={removeFromCart}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {isCartOpen && (
+            <motion.div
+              className="cartOverlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onMouseDown={onOutsideClick}
+              onTouchStart={onOutsideTouch}
+            >
+              <Cart onClose={() => setIsCartOpen(false)} />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <MobileMenu
           open={mobileMenuOpen}
           onClose={() => setMobileMenuOpen(false)}

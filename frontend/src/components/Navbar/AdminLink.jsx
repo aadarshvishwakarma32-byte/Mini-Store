@@ -26,7 +26,9 @@ const AdminLink = () => {
 
   return (
     <Link to="/admin" className="adminLinkBtn">
-      <span className="adminLinkIcon"><ShieldIcon /></span>
+      <span className="adminLinkIcon">
+        <ShieldIcon />
+      </span>
       <span className="adminLinkText">Admin Panel</span>
     </Link>
   );

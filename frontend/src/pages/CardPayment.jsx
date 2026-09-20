@@ -37,7 +37,9 @@ const CardPayment = () => {
       <div className="main">
         <div className="page">
           <h1 className="pageTitle">Card Payment</h1>
-          <div className="status">Your cart is empty. <a href="/">Continue shopping</a></div>
+          <div className="status">
+            Your cart is empty. <a href="/">Continue shopping</a>
+          </div>
         </div>
       </div>
     );
@@ -116,7 +118,9 @@ const CardPayment = () => {
               <h2 className="checkoutSectionTitle">Card Details</h2>
 
               <div className="field">
-                <label className="labelText" htmlFor="cardName">Name on Card</label>
+                <label className="labelText" htmlFor="cardName">
+                  Name on Card
+                </label>
                 <input
                   id="cardName"
                   className="input"
@@ -129,12 +133,16 @@ const CardPayment = () => {
               </div>
 
               <div className="field">
-                <label className="labelText" htmlFor="cardNumber">Card Number</label>
+                <label className="labelText" htmlFor="cardNumber">
+                  Card Number
+                </label>
                 <input
                   id="cardNumber"
                   className="input"
                   value={card.number}
-                  onChange={(e) => setCard((prev) => ({ ...prev, number: formatCardNumber(e.target.value) }))}
+                  onChange={(e) =>
+                    setCard((prev) => ({ ...prev, number: formatCardNumber(e.target.value) }))
+                  }
                   placeholder="1234 5678 9012 3456"
                   inputMode="numeric"
                   autocomplete="cc-number"
@@ -145,12 +153,16 @@ const CardPayment = () => {
 
               <div className="cardRow">
                 <div className="field">
-                  <label className="labelText" htmlFor="cardExpiry">Expiry Date</label>
+                  <label className="labelText" htmlFor="cardExpiry">
+                    Expiry Date
+                  </label>
                   <input
                     id="cardExpiry"
                     className="input"
                     value={card.expiry}
-                    onChange={(e) => setCard((prev) => ({ ...prev, expiry: formatExpiry(e.target.value) }))}
+                    onChange={(e) =>
+                      setCard((prev) => ({ ...prev, expiry: formatExpiry(e.target.value) }))
+                    }
                     placeholder="MM/YY"
                     inputMode="numeric"
                     autocomplete="cc-exp"
@@ -159,12 +171,19 @@ const CardPayment = () => {
                   {errors.expiry && <span className="errorText">{errors.expiry}</span>}
                 </div>
                 <div className="field">
-                  <label className="labelText" htmlFor="cardCvv">CVV</label>
+                  <label className="labelText" htmlFor="cardCvv">
+                    CVV
+                  </label>
                   <input
                     id="cardCvv"
                     className="input"
                     value={card.cvv}
-                    onChange={(e) => setCard((prev) => ({ ...prev, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                    onChange={(e) =>
+                      setCard((prev) => ({
+                        ...prev,
+                        cvv: e.target.value.replace(/\D/g, '').slice(0, 4),
+                      }))
+                    }
                     placeholder="123"
                     inputMode="numeric"
                     autocomplete="cc-csc"

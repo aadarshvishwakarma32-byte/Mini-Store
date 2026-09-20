@@ -9,7 +9,10 @@ const register = async (req, res, next) => {
     const { name, email, password, phone, address } = req.body;
 
     if (!name || !email || !password) {
-      return response.error(res, { message: 'name, email and password are required', statusCode: 400 });
+      return response.error(res, {
+        message: 'name, email and password are required',
+        statusCode: 400,
+      });
     }
 
     const result = await authService.register({ name, email, password, phone, address });
@@ -39,7 +42,10 @@ const changePassword = async (req, res, next) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return response.error(res, { message: 'currentPassword and newPassword are required', statusCode: 400 });
+      return response.error(res, {
+        message: 'currentPassword and newPassword are required',
+        statusCode: 400,
+      });
     }
 
     const result = await authService.changePassword(req.user.id, { currentPassword, newPassword });
@@ -60,24 +66,48 @@ const forgotPassword = async (req, res, next) => {
     const reset = await authService.requestPasswordReset(req.body.email || '');
     // Expose the link only during local development, where no email provider
     // is configured. Production always returns the same generic response.
-    const data = process.env.NODE_ENV === 'production' || !reset ? null : { resetToken: reset.token, resetUrl: reset.resetUrl };
-    return response.success(res, { message: 'If that email exists, a reset link has been generated', data });
-  } catch (err) { next(err); }
+    const data =
+      process.env.NODE_ENV === 'production' || !reset
+        ? null
+        : { resetToken: reset.token, resetUrl: reset.resetUrl };
+    return response.success(res, {
+      message: 'If that email exists, a reset link has been generated',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const validateResetToken = async (req, res, next) => {
   try {
     const user = await authService.validatePasswordResetToken(req.params.token);
-    if (!user) return response.error(res, { message: 'Password reset token is invalid or has expired', statusCode: 400 });
+    if (!user)
+      return response.error(res, {
+        message: 'Password reset token is invalid or has expired',
+        statusCode: 400,
+      });
     return response.success(res, { message: 'Password reset token is valid' });
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 };
 
 const resetPassword = async (req, res, next) => {
   try {
     await authService.resetPassword(req.params.token, req.body.password);
     return response.success(res, { message: 'Password reset successfully' });
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 };
 
-module.exports = { register, login, changePassword, logout, forgotPassword, validateResetToken, resetPassword };
+module.exports = {
+  register,
+  login,
+  changePassword,
+  logout,
+  forgotPassword,
+  validateResetToken,
+  resetPassword,
+};

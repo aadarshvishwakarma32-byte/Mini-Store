@@ -7,8 +7,19 @@ export function ProtectedRoute({ children, allowedRoles }) {
 
   if (loading || !initialized) {
     return (
-      <div className="authLoading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <div className="skeletonLine w40" style={{ height: '40px', width: '200px', borderRadius: '8px' }} />
+      <div
+        className="authLoading"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '50vh',
+        }}
+      >
+        <div
+          className="skeletonLine w40"
+          style={{ height: '40px', width: '200px', borderRadius: '8px' }}
+        />
       </div>
     );
   }

@@ -22,7 +22,9 @@ const ReturnIcon = () => (
 const OrdersLink = () => {
   return (
     <Link to="/orders" className="ordersLink">
-      <span className="ordersIcon"><ReturnIcon /></span>
+      <span className="ordersIcon">
+        <ReturnIcon />
+      </span>
       <span className="ordersText">
         <span className="ordersLabel">Returns</span>
         <span className="ordersSub">& Orders</span>

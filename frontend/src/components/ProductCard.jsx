@@ -1,12 +1,11 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.js';
 import { useWishlist } from '../hooks/useWishlist.js';
 
 const round2 = (n) => Math.round(n * 100) / 100;
 
-const ProductCard = ({ product, index }) => {
+const ProductCard = ({ product }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -14,10 +13,10 @@ const ProductCard = ({ product, index }) => {
 
   const productId = product._id || product.id;
   const title = product.name || product.title || 'Untitled Product';
-  const image =
-    (Array.isArray(product.images) && product.images[0]) ||
-    product.image ||
-    'https://cdn-icons-png.flaticon.com/512/3081/3081558.png';
+  const fallbackImage = 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png';
+  const [image, setImage] = useState(
+    (Array.isArray(product.images) && product.images[0]) || product.image || fallbackImage
+  );
   const categoryName =
     typeof product.category === 'object' && product.category !== null
       ? product.category.name || ''
@@ -30,14 +29,18 @@ const ProductCard = ({ product, index }) => {
   const count =
     typeof product.rating === 'object' && product.rating !== null
       ? (product.rating.count ?? 0)
-      : product.numReviews ?? 0;
+      : (product.numReviews ?? 0);
 
   const validRate = Math.min(5, Math.max(0, Math.round(rate)));
   const stars = '★'.repeat(validRate) + '☆'.repeat(5 - validRate);
   const isLiked = isInWishlist(productId);
 
-  const finalPrice = round2(product.discountPrice || product.price || 0);
-  const originalPrice = round2(product.price ? (product.discountPrice ? product.price : product.price * 1.4) : 0);
+  const finalPrice = round2(
+    product.discountPrice != null ? product.discountPrice : product.price || 0
+  );
+  const originalPrice = round2(
+    product.price ? (product.discountPrice != null ? product.price : product.price * 1.4) : 0
+  );
   const discountPercent =
     product.discountPrice && product.price
       ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
@@ -45,21 +48,15 @@ const ProductCard = ({ product, index }) => {
 
   const handleBuyNow = async () => {
     try {
-      await addToCart(product, 1);
-      navigate('/checkout');
+      const added = await addToCart(product, 1);
+      if (added) navigate('/checkout');
     } catch {
       // error already shown by context
     }
   };
 
   return (
-    <motion.article
-      className="productCard"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
-      whileHover={{ y: -6 }}
-    >
+    <article className="productCard">
       <div className="badges">
         <span className="badge badgeNew">New</span>
         <span className="badge badgeHot">Sale</span>
@@ -81,6 +78,13 @@ const ProductCard = ({ product, index }) => {
           alt={title}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
+          onError={() => {
+            if (image !== fallbackImage) {
+              setImage(fallbackImage);
+            } else {
+              setImgLoaded(true);
+            }
+          }}
           style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s' }}
         />
       </div>
@@ -105,25 +109,23 @@ const ProductCard = ({ product, index }) => {
       </p>
 
       <div className="cardActions">
-        <motion.button
+        <button
           type="button"
           className="btn btnGhost"
           onClick={() => addToCart(product)}
-          whileTap={{ scale: 0.97 }}
         >
           Add to cart
-        </motion.button>
-        <motion.button
+        </button>
+        <button
           type="button"
           className="btn"
           onClick={handleBuyNow}
-          whileTap={{ scale: 0.97 }}
         >
           Buy Now
-        </motion.button>
+        </button>
       </div>
-    </motion.article>
+    </article>
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

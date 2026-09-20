@@ -10,7 +10,11 @@ const findByUser = (userId, { skip = 0, limit = 20 } = {}) =>
   Order.find({ user: userId }).sort({ createdAt: -1 }).skip(Number(skip)).limit(Number(limit));
 
 const findAll = ({ filter = {}, skip = 0, limit = 20 } = {}) =>
-  Order.find(filter).populate('user', 'name email').sort({ createdAt: -1 }).skip(Number(skip)).limit(Number(limit));
+  Order.find(filter)
+    .populate('user', 'name email')
+    .sort({ createdAt: -1 })
+    .skip(Number(skip))
+    .limit(Number(limit));
 
 const count = (filter = {}) => Order.countDocuments(filter);
 

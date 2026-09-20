@@ -12,12 +12,9 @@ export const productService = {
     return api.get(`/products${query ? `?${query}` : ''}`);
   },
 
-  getProduct: (id) =>
-    api.get(`/products/${id}`),
+  getProduct: (id) => api.get(`/products/${id}`),
 
-  getCategories: () =>
-    api.get('/products/categories'),
+  getCategories: () => api.get('/products/categories'),
 
-  getCategory: (id) =>
-    api.get(`/products/category/${id}`)
+  getCategory: (id) => api.get(`/products/category/${id}`),
 };

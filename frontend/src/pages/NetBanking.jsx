@@ -49,7 +49,9 @@ const NetBanking = () => {
       <div className="main">
         <div className="page">
           <h1 className="pageTitle">Net Banking</h1>
-          <div className="status">Your cart is empty. <a href="/">Continue shopping</a></div>
+          <div className="status">
+            Your cart is empty. <a href="/">Continue shopping</a>
+          </div>
         </div>
       </div>
     );
@@ -130,7 +132,9 @@ const NetBanking = () => {
             <section>
               <h2 className="checkoutSectionTitle">Net Banking Credentials</h2>
               <div className="field">
-                <label className="labelText" htmlFor="bankId">Bank ID / Username</label>
+                <label className="labelText" htmlFor="bankId">
+                  Bank ID / Username
+                </label>
                 <input
                   id="bankId"
                   className="input"
@@ -141,13 +145,20 @@ const NetBanking = () => {
                 />
               </div>
               <div className="field">
-                <label className="labelText" htmlFor="pin">Transaction PIN</label>
+                <label className="labelText" htmlFor="pin">
+                  Transaction PIN
+                </label>
                 <input
                   id="pin"
                   type="password"
                   className="input"
                   value={form.pin}
-                  onChange={(e) => setForm((prev) => ({ ...prev, pin: e.target.value.replace(/\D/g, '').slice(0, 6) }))}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      pin: e.target.value.replace(/\D/g, '').slice(0, 6),
+                    }))
+                  }
                   placeholder="Enter 4-6 digit PIN"
                   inputMode="numeric"
                   maxLength={6}

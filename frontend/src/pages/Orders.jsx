@@ -50,7 +50,9 @@ const Orders = () => {
       if (res.success) {
         toast.success('Order cancelled successfully');
         setOrders((prev) =>
-          prev.map((o) => (o._id === order._id ? { ...o, status: 'cancelled', paymentStatus: 'cancelled' } : o))
+          prev.map((o) =>
+            o._id === order._id ? { ...o, status: 'cancelled', paymentStatus: 'cancelled' } : o
+          )
         );
       } else {
         toast.error(res.message || 'Failed to cancel order');
@@ -92,7 +94,9 @@ const Orders = () => {
                 <div className="orderItems">
                   {(order.items || []).map((item, idx) => (
                     <div key={idx} className="orderItem">
-                      <span>{item.title} × {item.quantity}</span>
+                      <span>
+                        {item.title} × {item.quantity}
+                      </span>
                       <span>₹{(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}

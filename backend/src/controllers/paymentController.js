@@ -17,7 +17,13 @@ const initiate = async (req, res, next) => {
     }
 
     const order = await orderService.getOrderById(orderId, req.user);
-    const result = await paymentService.initiatePayment(order, { method, upiId, cardLast4, cardNetwork, bankCode });
+    const result = await paymentService.initiatePayment(order, {
+      method,
+      upiId,
+      cardLast4,
+      cardNetwork,
+      bankCode,
+    });
     return response.success(res, { message: 'Payment initiated', data: result });
   } catch (err) {
     next(err);

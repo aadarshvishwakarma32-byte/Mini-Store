@@ -1,7 +1,12 @@
 const express = require('express');
 const { protect } = require('../middleware/authMiddleware');
 const { adminOnly } = require('../middleware/adminMiddleware');
-const { importWebCatalog, getStoreSettings, updateStoreSettings, getMonitoring } = require('../controllers/adminController');
+const {
+  importWebCatalog,
+  getStoreSettings,
+  updateStoreSettings,
+  getMonitoring,
+} = require('../controllers/adminController');
 
 const router = express.Router();
 

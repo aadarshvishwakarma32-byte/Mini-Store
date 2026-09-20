@@ -9,8 +9,7 @@ const findById = (id) => Payment.findById(id).populate('order').populate('user',
 const findByMerchantRef = (merchantOrderRef) =>
   Payment.findOne({ merchantOrderRef }).populate('order').populate('user', 'name email');
 
-const findByOrder = (orderId) =>
-  Payment.find({ order: orderId }).sort({ createdAt: -1 });
+const findByOrder = (orderId) => Payment.find({ order: orderId }).sort({ createdAt: -1 });
 
 const updateStatus = (id, status, extra = {}) =>
   Payment.findByIdAndUpdate(id, { status, ...extra }, { new: true, runValidators: true });

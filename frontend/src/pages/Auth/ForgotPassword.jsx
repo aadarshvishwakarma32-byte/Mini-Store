@@ -38,13 +38,19 @@ const ForgotPassword = () => {
           <div className="authCard successCard">
             <div className="successIcon">✓</div>
             <h1 className="pageTitle">Check Your Email</h1>
-            <p className="pageText">If an account exists for <strong>{email}</strong>, you'll receive a password reset link shortly.</p>
+            <p className="pageText">
+              If an account exists for <strong>{email}</strong>, you'll receive a password reset
+              link shortly.
+            </p>
             {resetToken && (
               <p className="pageText">
-                Development reset link: <Link to={`/reset-password/${resetToken}`}>Reset password</Link>
+                Development reset link:{' '}
+                <Link to={`/reset-password/${resetToken}`}>Reset password</Link>
               </p>
             )}
-            <Link to="/login" className="btn authSubmit">Back to Login</Link>
+            <Link to="/login" className="btn authSubmit">
+              Back to Login
+            </Link>
           </div>
         </section>
       </main>

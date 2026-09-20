@@ -50,5 +50,3 @@ export function ThemeProvider(props) {
   // keep named export for imports, while returning a component-only file for fast-refresh.
   return <ThemeProviderImpl {...props} />;
 }
-
-

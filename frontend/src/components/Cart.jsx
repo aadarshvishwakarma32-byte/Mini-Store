@@ -18,7 +18,10 @@ const Cart = ({ onClose }) => {
     <aside className="cart cartOpen" aria-hidden="false">
       <div className="cartHeader">
         <h3> CART🛒</h3>
-        <button type="button" className="btn btnGhost" onClick={onClose}> Close </button>
+        <button type="button" className="btn btnGhost" onClick={onClose}>
+          {' '}
+          Close{' '}
+        </button>
       </div>
 
       {cartItems.length === 0 ? (
@@ -30,21 +33,48 @@ const Cart = ({ onClose }) => {
               <div key={item.productId} className="cartItem">
                 <img
                   className="cartThumb"
-                  src={item.product?.image || item.product?.images?.[0] || 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png'}
+                  src={
+                    item.product?.image ||
+                    item.product?.images?.[0] ||
+                    'https://cdn-icons-png.flaticon.com/512/3081/3081558.png'
+                  }
                   alt={item.product?.name || item.product?.title || 'Product'}
                 />
 
                 <div className="cartMeta">
-                  <div className="cartTitle">{item.product?.name || item.product?.title || 'Product'}</div>
+                  <div className="cartTitle">
+                    {item.product?.name || item.product?.title || 'Product'}
+                  </div>
                   <div className="cartPrice">₹{item.price}</div>
 
                   <div className="cartControls">
-                    <button type="button" className="qtyBtn" onClick={() => decreaseQuantity(item.product?._id || item.product)}> - </button>
+                    <button
+                      type="button"
+                      className="qtyBtn"
+                      onClick={() => decreaseQuantity(item.productId)}
+                    >
+                      {' '}
+                      -{' '}
+                    </button>
 
                     <span className="qty">{item.quantity}</span>
-                    <button type="button" className="qtyBtn" onClick={() => increaseQuantity(item.product?._id || item.product)}> + </button>
+                    <button
+                      type="button"
+                      className="qtyBtn"
+                      onClick={() => increaseQuantity(item.productId)}
+                    >
+                      {' '}
+                      +{' '}
+                    </button>
 
-                    <button type="button" className="linkBtn" onClick={() => removeFromCart(item.productId)}> Remove </button>
+                    <button
+                      type="button"
+                      className="linkBtn"
+                      onClick={() => removeFromCart(item.productId)}
+                    >
+                      {' '}
+                      Remove{' '}
+                    </button>
                   </div>
                 </div>
 

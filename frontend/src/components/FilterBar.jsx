@@ -1,7 +1,18 @@
 import { useId, useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const categories = ['All', 'Electronics', 'Fashion', 'Home & Kitchen', 'Beauty', 'Sports', 'Books', 'Accessories', 'Mobiles', 'Computers'];
+const categories = [
+  'All',
+  'Electronics',
+  'Fashion',
+  'Home & Kitchen',
+  'Beauty',
+  'Sports',
+  'Books',
+  'Accessories',
+  'Mobiles',
+  'Computers',
+];
 
 const sorts = [
   { value: 'default', label: 'Sort by: Featured' },
@@ -49,8 +60,21 @@ const FilterBar = ({ category, onCategoryChange, sort, onSortChange }) => {
           onClick={() => setIsExpanded((open) => !open)}
         >
           <span>All Categories</span>
-          <svg className="filterToggleIcon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            className="filterToggleIcon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M4 6l4 4 4-4"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
 
@@ -93,7 +117,17 @@ const FilterBar = ({ category, onCategoryChange, sort, onSortChange }) => {
             onClick={() => setSortOpen((v) => !v)}
           >
             <span>{currentSort.label}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
               <path d="m6 9 6 6 6-6" />
             </svg>
           </button>

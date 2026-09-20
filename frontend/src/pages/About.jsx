@@ -16,7 +16,9 @@ const About = () => {
 
           <div className="aboutCard">
             <h2 className="aboutHeading">Vision</h2>
-            <p className="aboutText">To become the go-to mini marketplace with exceptional customer care.</p>
+            <p className="aboutText">
+              To become the go-to mini marketplace with exceptional customer care.
+            </p>
           </div>
 
           <div className="aboutCard">
@@ -34,4 +36,3 @@ const About = () => {
 };
 
 export default About;
-

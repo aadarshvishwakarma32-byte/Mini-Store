@@ -9,7 +9,10 @@ const sourceUrl = 'https://dummyjson.com/products?limit=0';
 const categoryRules = [
   { name: 'Electronics', sourceCategories: ['tablets', 'audio'] },
   { name: 'Fashion', sourceCategories: ['tops', 'mens-shirts', 'womens-dresses'] },
-  { name: 'Home & Kitchen', sourceCategories: ['kitchen-accessories', 'home-decoration', 'furniture'] },
+  {
+    name: 'Home & Kitchen',
+    sourceCategories: ['kitchen-accessories', 'home-decoration', 'furniture'],
+  },
   { name: 'Beauty', sourceCategories: ['beauty', 'skin-care', 'fragrances'] },
   { name: 'Sports', sourceCategories: ['sports-accessories'] },
   { name: 'Accessories', sourceCategories: ['womens-bags', 'womens-jewellery', 'sunglasses'] },
@@ -69,7 +72,10 @@ const importWebCatalog = async (req, res, next) => {
           category: categoryByName.get(name)._id,
           image: product.thumbnail || product.images?.[0] || '',
           stock: Number(product.stock) || 0,
-          rating: { rate: Number(product.rating) || 0, count: Math.max(Number(product.reviews?.length) || 0, 1) },
+          rating: {
+            rate: Number(product.rating) || 0,
+            count: Math.max(Number(product.reviews?.length) || 0, 1),
+          },
         });
       });
     });
@@ -87,13 +93,19 @@ const importWebCatalog = async (req, res, next) => {
         category: categoryByName.get('Offers')._id,
         image: product.thumbnail || product.images?.[0] || '',
         stock: Number(product.stock) || 0,
-        rating: { rate: Number(product.rating) || 0, count: Math.max(Number(product.reviews?.length) || 0, 1) },
+        rating: {
+          rate: Number(product.rating) || 0,
+          count: Math.max(Number(product.reviews?.length) || 0, 1),
+        },
       });
     });
 
     const existingTitles = new Set(
-      (await Product.find({ title: { $in: candidates.map((product) => product.title) } }).select('title'))
-        .map((product) => product.title)
+      (
+        await Product.find({ title: { $in: candidates.map((product) => product.title) } }).select(
+          'title'
+        )
+      ).map((product) => product.title)
     );
     const newProducts = candidates.filter((product) => !existingTitles.has(product.title));
     if (newProducts.length) await Product.insertMany(newProducts);
@@ -112,27 +124,43 @@ const getStoreSettings = async (req, res, next) => {
     let settings = await StoreSettings.findOne();
     if (!settings) settings = await StoreSettings.create({});
     return response.success(res, { data: settings });
-  } catch (error) { return next(error); }
+  } catch (error) {
+    return next(error);
+  }
 };
 
 const updateStoreSettings = async (req, res, next) => {
   try {
     const allowed = ['storeName', 'announcement', 'supportEmail', 'currency', 'isStoreOpen'];
-    const updates = Object.fromEntries(allowed.filter((key) => key in req.body).map((key) => [key, req.body[key]]));
-    const settings = await StoreSettings.findOneAndUpdate({}, { $set: updates }, { new: true, upsert: true, setDefaultsOnInsert: true });
+    const updates = Object.fromEntries(
+      allowed.filter((key) => key in req.body).map((key) => [key, req.body[key]])
+    );
+    const settings = await StoreSettings.findOneAndUpdate(
+      {},
+      { $set: updates },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
     return response.success(res, { message: 'Store settings updated', data: settings });
-  } catch (error) { return next(error); }
+  } catch (error) {
+    return next(error);
+  }
 };
 
 const getMonitoring = async (req, res, next) => {
   try {
     const [products, activeProducts, users, activeUsers, orders] = await Promise.all([
-      Product.countDocuments(), Product.countDocuments({ isActive: true }),
-      require('../models/User').countDocuments(), require('../models/User').countDocuments({ isActive: true }),
+      Product.countDocuments(),
+      Product.countDocuments({ isActive: true }),
+      require('../models/User').countDocuments(),
+      require('../models/User').countDocuments({ isActive: true }),
       require('../models/Order').countDocuments(),
     ]);
-    return response.success(res, { data: { ...getSnapshot(), totals: { products, activeProducts, users, activeUsers, orders } } });
-  } catch (error) { return next(error); }
+    return response.success(res, {
+      data: { ...getSnapshot(), totals: { products, activeProducts, users, activeUsers, orders } },
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 module.exports = { importWebCatalog, getStoreSettings, updateStoreSettings, getMonitoring };

@@ -36,7 +36,9 @@ const Checkout = () => {
       <div className="main">
         <div className="page">
           <h1 className="pageTitle">Checkout</h1>
-          <div className="status">Your cart is empty. <a href="/">Continue shopping</a></div>
+          <div className="status">
+            Your cart is empty. <a href="/">Continue shopping</a>
+          </div>
         </div>
       </div>
     );
@@ -89,7 +91,9 @@ const Checkout = () => {
             <section>
               <h2 className="checkoutSectionTitle">Shipping Address</h2>
               <div className="field">
-                <label className="labelText" htmlFor="street">Street Address</label>
+                <label className="labelText" htmlFor="street">
+                  Street Address
+                </label>
                 <input
                   id="street"
                   name="street"
@@ -101,7 +105,9 @@ const Checkout = () => {
                 />
               </div>
               <div className="field">
-                <label className="labelText" htmlFor="city">City</label>
+                <label className="labelText" htmlFor="city">
+                  City
+                </label>
                 <input
                   id="city"
                   name="city"
@@ -113,7 +119,9 @@ const Checkout = () => {
                 />
               </div>
               <div className="field">
-                <label className="labelText" htmlFor="state">State</label>
+                <label className="labelText" htmlFor="state">
+                  State
+                </label>
                 <input
                   id="state"
                   name="state"
@@ -124,7 +132,9 @@ const Checkout = () => {
                 />
               </div>
               <div className="field">
-                <label className="labelText" htmlFor="zipCode">ZIP / Postal Code</label>
+                <label className="labelText" htmlFor="zipCode">
+                  ZIP / Postal Code
+                </label>
                 <input
                   id="zipCode"
                   name="zipCode"
@@ -136,7 +146,9 @@ const Checkout = () => {
                 />
               </div>
               <div className="field">
-                <label className="labelText" htmlFor="country">Country</label>
+                <label className="labelText" htmlFor="country">
+                  Country
+                </label>
                 <input
                   id="country"
                   name="country"
@@ -185,7 +197,9 @@ const Checkout = () => {
                   <span className="paymentIcon">📱</span>
                   <span className="paymentLabel">UPI</span>
                 </label>
-                <label className={`paymentOption ${paymentMethod === 'netbanking' ? 'selected' : ''}`}>
+                <label
+                  className={`paymentOption ${paymentMethod === 'netbanking' ? 'selected' : ''}`}
+                >
                   <input
                     type="radio"
                     name="paymentMethod"
@@ -195,17 +209,6 @@ const Checkout = () => {
                   />
                   <span className="paymentIcon">🏦</span>
                   <span className="paymentLabel">Net Banking</span>
-                </label>
-                <label className={`paymentOption ${paymentMethod === 'paypal' ? 'selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="paypal"
-                    checked={paymentMethod === 'paypal'}
-                    onChange={() => setPaymentMethod('paypal')}
-                  />
-                  <span className="paymentIcon">PayPal</span>
-                  <span className="paymentLabel">PayPal</span>
                 </label>
               </div>
             </section>

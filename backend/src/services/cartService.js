@@ -32,9 +32,11 @@ const addItem = async (userId, { productId, quantity }) => {
 
   const cart = await getOrCreateCart(userId);
 
-  const existingItem = cart.items.find((item) => (item.product._id
-    ? item.product._id.toString() === productId
-    : item.product.toString() === productId));
+  const existingItem = cart.items.find((item) =>
+    item.product._id
+      ? item.product._id.toString() === productId
+      : item.product.toString() === productId
+  );
 
   // Stock must cover the TOTAL quantity that will end up in the cart
   // (existing + new), not just the newly-added amount.
@@ -58,7 +60,9 @@ const updateItemQuantity = async (userId, productId, quantity) => {
   }
 
   const cart = await getOrCreateCart(userId);
-  const item = cart.items.find((i) => (i.product._id ? i.product._id.toString() : i.product.toString()) === productId);
+  const item = cart.items.find(
+    (i) => (i.product._id ? i.product._id.toString() : i.product.toString()) === productId
+  );
 
   if (!item) throw new AppError('Item not found in cart', 404);
 

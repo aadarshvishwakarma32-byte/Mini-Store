@@ -1,20 +1,15 @@
 import { api } from './api.js';
 
 export const adminService = {
-  createProduct: (data) =>
-    api.post('/products', data),
+  createProduct: (data) => api.post('/products', data),
 
-  updateProduct: (id, data) =>
-    api.put(`/products/${id}`, data),
+  updateProduct: (id, data) => api.put(`/products/${id}`, data),
 
-  deleteProduct: (id) =>
-    api.delete(`/products/${id}`),
+  deleteProduct: (id) => api.delete(`/products/${id}`),
 
-  createCategory: (data) =>
-    api.post('/products/categories', data),
+  createCategory: (data) => api.post('/products/categories', data),
 
-  importWebCatalog: () =>
-    api.post('/admin/catalog/import', {}),
+  importWebCatalog: () => api.post('/admin/catalog/import', {}),
 
   getUsers: (params = {}) => {
     const query = new URLSearchParams(params).toString();
@@ -38,6 +33,5 @@ export const adminService = {
     return api.get(`/orders${query ? `?${query}` : ''}`);
   },
 
-  updateOrderStatus: (id, orderStatus) =>
-    api.put(`/orders/${id}/status`, { status: orderStatus })
+  updateOrderStatus: (id, orderStatus) => api.put(`/orders/${id}/status`, { status: orderStatus }),
 };

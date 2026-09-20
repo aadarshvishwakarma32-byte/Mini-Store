@@ -12,10 +12,10 @@ class ApiClient {
       headers: {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers
+        ...options.headers,
       },
       credentials: 'include',
-      ...options
+      ...options,
     };
 
     if (options.body && typeof options.body === 'object') {
@@ -38,7 +38,10 @@ class ApiClient {
       return data;
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to server. Please ensure the backend is running on port 5000.', { cause: error });
+        throw new Error(
+          'Unable to connect to server. Please ensure the backend is running on port 5000.',
+          { cause: error }
+        );
       }
       throw error;
     }

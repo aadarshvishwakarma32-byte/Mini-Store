@@ -9,10 +9,11 @@ const environment = {
   NODE_ENV: process.env.NODE_ENV || 'development',
 
   // Database
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mini_store',
+  MONGO_URI:
+    process.env.MONGO_URI || process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/mini_store',
 
   // Auth / JWT
-  JWT_SECRET: process.env.JWT_SECRET || 'change_this_secret_in_production',
+  JWT_SECRET: process.env.JWT_SECRET || 'replace_with_secure_random_secret_in_production',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
 
   // Bcrypt
@@ -30,8 +31,22 @@ const environment = {
   MAX_FILE_SIZE_MB: parseInt(process.env.MAX_FILE_SIZE_MB, 10) || 5,
 };
 
-if (!process.env.MONGO_URI || /YOUR_CLUSTER|YOUR_USERNAME|YOUR_PASSWORD/.test(process.env.MONGO_URI)) {
-  console.error('ERROR: MONGO_URI is not configured. Set a valid MongoDB connection string in your environment variables.');
+if (
+  !environment.MONGO_URI ||
+  /YOUR_CLUSTER|YOUR_USERNAME|YOUR_PASSWORD/.test(environment.MONGO_URI)
+) {
+  console.error(
+    'ERROR: MONGO_URI is not configured. Set a valid MongoDB connection string in your environment variables.'
+  );
+  process.exit(1);
+}
+
+if (
+  environment.NODE_ENV === 'production' &&
+  (!process.env.JWT_SECRET ||
+    process.env.JWT_SECRET.includes('replace_with_secure_random_secret_in_production'))
+) {
+  console.error('ERROR: JWT_SECRET must be set to a secure random value in production.');
   process.exit(1);
 }
 

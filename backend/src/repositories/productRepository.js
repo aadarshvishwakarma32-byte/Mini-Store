@@ -7,7 +7,11 @@ const create = (productData) => Product.create(productData);
 const findById = (id) => Product.findById(id).populate('category', 'name slug');
 
 const findAll = ({ filter = {}, skip = 0, limit = 20, sort = { createdAt: -1 } } = {}) =>
-  Product.find(filter).populate('category', 'name slug').skip(Number(skip)).limit(Number(limit)).sort(sort);
+  Product.find(filter)
+    .populate('category', 'name slug')
+    .skip(Number(skip))
+    .limit(Number(limit))
+    .sort(sort);
 
 const count = (filter = {}) => Product.countDocuments(filter);
 
@@ -26,11 +30,7 @@ const decrementStock = (id, quantity) =>
   );
 
 const incrementStock = (id, quantity) =>
-  Product.findByIdAndUpdate(
-    id,
-    { $inc: { stock: quantity } },
-    { new: true, runValidators: true }
-  );
+  Product.findByIdAndUpdate(id, { $inc: { stock: quantity } }, { new: true, runValidators: true });
 
 const search = (query, { skip = 0, limit = 20 } = {}) =>
   Product.find({ $text: { $search: query }, isActive: true })
@@ -38,7 +38,8 @@ const search = (query, { skip = 0, limit = 20 } = {}) =>
     .skip(Number(skip))
     .limit(Number(limit));
 
-const searchCount = (query) => Product.countDocuments({ $text: { $search: query }, isActive: true });
+const searchCount = (query) =>
+  Product.countDocuments({ $text: { $search: query }, isActive: true });
 
 module.exports = {
   create,

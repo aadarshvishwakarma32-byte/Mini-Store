@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import Hero from '../components/Hero.jsx';
 import FeatureStrip from '../components/FeatureStrip.jsx';
 import SearchBar from '../components/SearchBar.jsx';
@@ -9,10 +8,18 @@ import ProductList from '../components/ProductList.jsx';
 import { useProducts } from '../features/products/hooks/useProducts.js';
 
 const Home = () => {
-  const { products, loading, error } = useProducts({ limit: 50 });
+  const { products, loading, error } = useProducts({ limit: 20 });
   const [searchParams] = useSearchParams();
-  const [search, setSearch] = useState('');
+  const searchParamsKey = searchParams.toString();
+  const [search, setSearch] = useState(() => searchParams.get('search') || '');
   const [category, setCategory] = useState(() => searchParams.get('category') || 'All');
+
+  // Keep filters in sync with navbar/category links without remounting Home.
+  useEffect(() => {
+    const params = new URLSearchParams(searchParamsKey);
+    setSearch(params.get('search') || '');
+    setCategory(params.get('category') || 'All');
+  }, [searchParamsKey]);
   const [sort, setSort] = useState('default');
 
   const filteredProducts = useMemo(() => {
@@ -22,7 +29,9 @@ const Home = () => {
       const q = search.toLowerCase();
       result = result.filter((p) => {
         const title = (p.name || p.title || '').toLowerCase();
-        const cat = (typeof p.category === 'object' && p.category !== null ? p.category.name : p.category) || '';
+        const cat =
+          (typeof p.category === 'object' && p.category !== null ? p.category.name : p.category) ||
+          '';
         const desc = (p.description || '').toLowerCase();
         return title.includes(q) || cat.toLowerCase().includes(q) || desc.includes(q);
       });
@@ -30,7 +39,8 @@ const Home = () => {
 
     if (category !== 'All') {
       result = result.filter((p) => {
-        const catName = typeof p.category === 'object' && p.category !== null ? p.category.name : p.category;
+        const catName =
+          typeof p.category === 'object' && p.category !== null ? p.category.name : p.category;
         return catName && catName.toLowerCase() === category.toLowerCase();
       });
     }
@@ -49,8 +59,14 @@ const Home = () => {
       });
     } else if (sort === 'rating') {
       result = [...result].sort((a, b) => {
-        const rateA = typeof a.rating === 'object' && a.rating !== null ? (a.rating.rate ?? 0) : (Number(a.rating) || 0);
-        const rateB = typeof b.rating === 'object' && b.rating !== null ? (b.rating.rate ?? 0) : (Number(b.rating) || 0);
+        const rateA =
+          typeof a.rating === 'object' && a.rating !== null
+            ? (a.rating.rate ?? 0)
+            : Number(a.rating) || 0;
+        const rateB =
+          typeof b.rating === 'object' && b.rating !== null
+            ? (b.rating.rate ?? 0)
+            : Number(b.rating) || 0;
         return rateB - rateA;
       });
     }
@@ -58,16 +74,32 @@ const Home = () => {
     return result;
   }, [products, search, category, sort]);
 
+  const handleSearch = useCallback((e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      // Navigation handled by SearchBar
+    }
+  }, [search]);
+
   return (
     <main className="main">
-      <Hero onShopNow={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })} />
+      <Hero
+        onShopNow={() =>
+          document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
+        }
+      />
       <FeatureStrip />
-      <SearchBar value={search} onChange={setSearch} />
-      <FilterBar category={category} onCategoryChange={setCategory} sort={sort} onSortChange={setSort} />
+      <SearchBar value={search} onChange={setSearch} onSearch={handleSearch} />
+      <FilterBar
+        category={category}
+        onCategoryChange={setCategory}
+        sort={sort}
+        onSortChange={setSort}
+      />
 
       {loading && (
         <div className="productGrid" aria-label="Loading products">
-          {Array.from({ length: 10 }).map((_, idx) => (
+          {Array.from({ length: 8 }).map((_, idx) => (
             <div key={idx} className="skeletonCard" aria-hidden="true">
               <div className="skeletonImage" />
               <div className="skeletonLine w60" />
@@ -83,11 +115,7 @@ const Home = () => {
 
       {!loading && !error && (
         <div id="products">
-          <AnimatePresence mode="popLayout">
-            <ProductList
-              products={filteredProducts}
-            />
-          </AnimatePresence>
+          <ProductList products={filteredProducts} />
         </div>
       )}
     </main>

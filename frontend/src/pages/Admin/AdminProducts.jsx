@@ -14,10 +14,12 @@ const AdminProducts = () => {
     description: '',
     price: '',
     discountPrice: '',
+    brand: '',
     category: '',
     image: '',
     stock: '',
-    isActive: true
+    isActive: true,
+    featured: false,
   });
 
   const loadProducts = async () => {
@@ -36,7 +38,7 @@ const AdminProducts = () => {
       const data = await productService.getCategories();
       setCategories(data.data || []);
     } catch {
-      // silent
+      toast.error('Failed to load categories');
     }
   };
 
@@ -55,6 +57,8 @@ const AdminProducts = () => {
         category: formData.category,
         image: formData.image.trim(),
         isActive: formData.isActive,
+        featured: formData.featured,
+        brand: formData.brand.trim() || undefined,
         price: Number(formData.price),
         discountPrice: formData.discountPrice ? Number(formData.discountPrice) : undefined,
         stock: Number(formData.stock),
@@ -64,7 +68,16 @@ const AdminProducts = () => {
       toast.success('Product created successfully');
       setShowForm(false);
       setFormData({
-        title: '', description: '', price: '', category: '', image: '', stock: '', isActive: true
+        title: '',
+        description: '',
+        price: '',
+        discountPrice: '',
+        brand: '',
+        category: '',
+        image: '',
+        stock: '',
+        isActive: true,
+        featured: false,
       });
       loadProducts();
     } catch {
@@ -87,8 +100,14 @@ const AdminProducts = () => {
     return (
       <main className="main">
         <section className="page">
-          <div className="skeletonLine w60" style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }} />
+          <div
+            className="skeletonLine w60"
+            style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }}
+          />
         </section>
       </main>
     );
@@ -134,7 +153,9 @@ const AdminProducts = () => {
                 >
                   <option value="">Select category</option>
                   {categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>{cat.name}</option>
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -226,7 +247,9 @@ const AdminProducts = () => {
                 <select
                   className="input"
                   value={formData.isActive ? 'active' : 'inactive'}
-                  onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'active' })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, isActive: e.target.value === 'active' })
+                  }
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -238,7 +261,9 @@ const AdminProducts = () => {
                 <select
                   className="input"
                   value={formData.featured ? 'true' : 'false'}
-                  onChange={(e) => setFormData({ ...formData, featured: e.target.value === 'true' })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, featured: e.target.value === 'true' })
+                  }
                 >
                   <option value="false">No</option>
                   <option value="true">Yes</option>
@@ -272,7 +297,9 @@ const AdminProducts = () => {
                   <td>₹{product.price}</td>
                   <td>{product.stock}</td>
                   <td>
-                    <span className={`statusBadge ${product.isActive ? 'active' : 'inactive'}`}>{product.isActive ? 'active' : 'inactive'}</span>
+                    <span className={`statusBadge ${product.isActive ? 'active' : 'inactive'}`}>
+                      {product.isActive ? 'active' : 'inactive'}
+                    </span>
                   </td>
                   <td>
                     <button

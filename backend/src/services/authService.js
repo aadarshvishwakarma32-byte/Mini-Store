@@ -89,11 +89,15 @@ const requestPasswordReset = async (email) => {
 const validatePasswordResetToken = async (token) => {
   const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
   const User = require('../models/User');
-  return User.findOne({ passwordResetToken: tokenHash, passwordResetExpires: { $gt: new Date() } }).select('_id');
+  return User.findOne({
+    passwordResetToken: tokenHash,
+    passwordResetExpires: { $gt: new Date() },
+  }).select('_id');
 };
 
 const resetPassword = async (token, password) => {
-  if (!password || password.length < 6) throw new AppError('Password must be at least 6 characters', 400);
+  if (!password || password.length < 6)
+    throw new AppError('Password must be at least 6 characters', 400);
   const user = await validatePasswordResetToken(token);
   if (!user) throw new AppError('Password reset token is invalid or has expired', 400);
   user.password = await hashPassword(password);
@@ -102,4 +106,11 @@ const resetPassword = async (token, password) => {
   await user.save();
 };
 
-module.exports = { register, login, changePassword, requestPasswordReset, validatePasswordResetToken, resetPassword };
+module.exports = {
+  register,
+  login,
+  changePassword,
+  requestPasswordReset,
+  validatePasswordResetToken,
+  resetPassword,
+};

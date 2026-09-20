@@ -70,4 +70,11 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
-module.exports = { placeOrder, getMyOrders, getOrderById, listAllOrders, updateOrderStatus, cancelOrder };
+module.exports = {
+  placeOrder,
+  getMyOrders,
+  getOrderById,
+  listAllOrders,
+  updateOrderStatus,
+  cancelOrder,
+};

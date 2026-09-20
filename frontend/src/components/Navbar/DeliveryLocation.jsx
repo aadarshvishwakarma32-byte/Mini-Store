@@ -20,7 +20,9 @@ const PinIcon = () => (
 const DeliveryLocation = () => {
   return (
     <button type="button" className="deliveryBtn">
-      <span className="deliveryIcon"><PinIcon /></span>
+      <span className="deliveryIcon">
+        <PinIcon />
+      </span>
       <span className="deliveryText">
         <span className="deliveryLabel">Deliver to</span>
         <span className="deliveryCountry">India</span>

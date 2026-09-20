@@ -15,18 +15,14 @@ export const orderService = {
     return api.get(`/orders/my-orders${query ? `?${query}` : ''}`);
   },
 
-  getOrder: (id) =>
-    api.get(`/orders/${id}`),
+  getOrder: (id) => api.get(`/orders/${id}`),
 
   initiatePayment: (orderId, { method, upiId, cardLast4, cardNetwork, bankCode }) =>
     api.post('/payments/initiate', { orderId, method, upiId, cardLast4, cardNetwork, bankCode }),
 
-  verifyPayment: (merchantOrderRef) =>
-    api.post(`/payments/verify/${merchantOrderRef}`, {}),
+  verifyPayment: (merchantOrderRef) => api.post(`/payments/verify/${merchantOrderRef}`, {}),
 
-  refundPayment: (paymentId, amount) =>
-    api.post(`/payments/refund/${paymentId}`, { amount }),
+  refundPayment: (paymentId, amount) => api.post(`/payments/refund/${paymentId}`, { amount }),
 
-  cancelOrder: (id) =>
-    api.delete(`/orders/${id}`),
+  cancelOrder: (id) => api.delete(`/orders/${id}`),
 };

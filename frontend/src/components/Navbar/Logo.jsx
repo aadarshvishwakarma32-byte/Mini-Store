@@ -22,7 +22,9 @@ const BagIcon = () => (
 const Logo = () => {
   return (
     <Link to="/" className="logoLink" aria-label="Mini Store home">
-      <span className="logoIcon"><BagIcon /></span>
+      <span className="logoIcon">
+        <BagIcon />
+      </span>
       <span className="logoText">Mini Store</span>
     </Link>
   );

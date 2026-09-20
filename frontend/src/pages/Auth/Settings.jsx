@@ -72,9 +72,18 @@ const Settings = () => {
     return (
       <main className="main">
         <section className="page">
-          <div className="skeletonLine w60" style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }} />
-          <div className="skeletonLine w40" style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }} />
+          <div
+            className="skeletonLine w60"
+            style={{ height: '40px', width: '200px', borderRadius: '8px', margin: '0 auto 16px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto 8px' }}
+          />
+          <div
+            className="skeletonLine w40"
+            style={{ height: '16px', width: '100%', borderRadius: '8px', margin: '0 auto' }}
+          />
         </section>
       </main>
     );
@@ -85,7 +94,11 @@ const Settings = () => {
       <section className="page profilePage">
         <h1 className="pageTitle">Settings</h1>
 
-        {success && <div className="status success" role="status">{success}</div>}
+        {success && (
+          <div className="status success" role="status">
+            {success}
+          </div>
+        )}
         {errors.form && <div className="status error">{errors.form}</div>}
 
         <form className="authForm profileForm" onSubmit={handleSubmit}>
@@ -128,7 +141,10 @@ const Settings = () => {
           </div>
 
           <div className="field">
-            <label className="labelText" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            <label
+              className="labelText"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+            >
               <input
                 type="checkbox"
                 name="notifications"
@@ -140,7 +156,10 @@ const Settings = () => {
           </div>
 
           <div className="field">
-            <label className="labelText" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            <label
+              className="labelText"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+            >
               <input
                 type="checkbox"
                 name="newsletter"

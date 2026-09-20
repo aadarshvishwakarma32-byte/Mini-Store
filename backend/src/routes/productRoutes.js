@@ -26,7 +26,8 @@ const ALLOWED_EXT = /^\.(jpe?g|png|webp)$/i;
 const ALLOWED_MIME = /^image\/(jpeg|png|webp)$/;
 
 const fileFilter = (req, file, cb) => {
-  const isValid = ALLOWED_EXT.test(path.extname(file.originalname)) && ALLOWED_MIME.test(file.mimetype);
+  const isValid =
+    ALLOWED_EXT.test(path.extname(file.originalname)) && ALLOWED_MIME.test(file.mimetype);
   if (!isValid) {
     // Pass an AppError (has statusCode) rather than a plain Error, so
     // errorMiddleware returns a clean 400 instead of a generic 500.
@@ -54,6 +55,12 @@ router.get('/:id', productController.getProductById);
 router.post('/', protect, adminOnly, productController.createProduct);
 router.put('/:id', protect, adminOnly, productController.updateProduct);
 router.delete('/:id', protect, adminOnly, productController.deleteProduct);
-router.post('/upload-image', protect, adminOnly, upload.single('image'), productController.uploadProductImage);
+router.post(
+  '/upload-image',
+  protect,
+  adminOnly,
+  upload.single('image'),
+  productController.uploadProductImage
+);
 
 module.exports = router;

@@ -11,7 +11,14 @@ const createProduct = async (productData) => {
   return productRepository.create(productData);
 };
 
-const listProducts = async ({ page = 1, limit = 20, category, minPrice, maxPrice, search } = {}) => {
+const listProducts = async ({
+  page = 1,
+  limit = 20,
+  category,
+  minPrice,
+  maxPrice,
+  search,
+} = {}) => {
   // page/limit arrive as strings from req.query — coerce to safe integers
   // before doing arithmetic or handing them to Mongoose's skip()/limit().
   const pageNum = Math.max(parseInt(page, 10) || 1, 1);

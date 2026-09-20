@@ -47,7 +47,7 @@ app.use('/uploads', express.static(environment.UPLOAD_PATH));
 
 // --- Health check ---
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ success: true, message: 'API is running', env: environment.NODE_ENV });
+  res.status(200).json({ success: true, message: 'API is running' });
 });
 
 // --- API routes ---

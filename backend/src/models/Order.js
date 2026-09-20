@@ -51,7 +51,18 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['cod', 'card', 'upi', 'upi_qr', 'phonepe', 'paytm', 'gpay', 'bhim', 'netbanking', 'paypal'],
+      enum: [
+        'cod',
+        'card',
+        'upi',
+        'upi_qr',
+        'phonepe',
+        'paytm',
+        'gpay',
+        'bhim',
+        'netbanking',
+        'paypal',
+      ],
       default: 'cod',
     },
     paymentStatus: {

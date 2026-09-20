@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { AuthContext } from './AuthContext.js';
 import { authService } from '../services/auth.service.js';
 import { toast } from 'sonner';
@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
     fetchUser();
   }, [fetchUser]);
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     try {
       const response = await authService.login(email, password);
       if (response.success && response.data?.user) {
@@ -44,9 +44,9 @@ export function AuthProvider({ children }) {
     } catch (error) {
       return { success: false, message: error.message || 'Login failed' };
     }
-  };
+  }, []);
 
-  const register = async (name, email, password) => {
+  const register = useCallback(async (name, email, password) => {
     try {
       const response = await authService.register(name, email, password);
       if (response.success && response.data?.user) {
@@ -61,9 +61,9 @@ export function AuthProvider({ children }) {
     } catch (error) {
       return { success: false, message: error.message || 'Registration failed' };
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await authService.logout();
     } catch {
@@ -73,9 +73,9 @@ export function AuthProvider({ children }) {
       setUser(null);
       toast.success('Logged out successfully');
     }
-  };
+  }, []);
 
-  const updateProfile = async (data) => {
+  const updateProfile = useCallback(async (data) => {
     try {
       const response = await authService.updateProfile(data);
       if (response.success && response.data?.user) {
@@ -87,9 +87,9 @@ export function AuthProvider({ children }) {
     } catch (error) {
       return { success: false, message: error.message || 'Update failed' };
     }
-  };
+  }, []);
 
-  const changePassword = async (currentPassword, newPassword) => {
+  const changePassword = useCallback(async (currentPassword, newPassword) => {
     try {
       const response = await authService.changePassword(currentPassword, newPassword);
       if (response.success) {
@@ -100,20 +100,23 @@ export function AuthProvider({ children }) {
     } catch (error) {
       return { success: false, message: error.message || 'Password change failed' };
     }
-  };
+  }, []);
 
-  const value = {
-    user,
-    loading,
-    initialized,
-    login,
-    register,
-    logout,
-    updateProfile,
-    changePassword,
-    isAuthenticated: !!user,
-    isAdmin: user?.role === 'admin'
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      loading,
+      initialized,
+      login,
+      register,
+      logout,
+      updateProfile,
+      changePassword,
+      isAuthenticated: !!user,
+      isAdmin: user?.role === 'admin',
+    }),
+    [user, loading, initialized, login, register, logout, updateProfile, changePassword]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

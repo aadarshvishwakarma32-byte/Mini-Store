@@ -41,7 +41,9 @@ const UpiPayment = () => {
       <div className="main">
         <div className="page">
           <h1 className="pageTitle">UPI Payment</h1>
-          <div className="status">Your cart is empty. <a href="/">Continue shopping</a></div>
+          <div className="status">
+            Your cart is empty. <a href="/">Continue shopping</a>
+          </div>
         </div>
       </div>
     );
@@ -120,7 +122,9 @@ const UpiPayment = () => {
               disabled={!selectedApp || processing}
               onClick={handlePayment}
             >
-              {processing ? 'Processing...' : `Pay ₹${total.toFixed(2)} via ${selectedApp ? selectedApp.name : 'UPI'}`}
+              {processing
+                ? 'Processing...'
+                : `Pay ₹${total.toFixed(2)} via ${selectedApp ? selectedApp.name : 'UPI'}`}
             </button>
           </div>
 

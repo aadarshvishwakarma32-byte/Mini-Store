@@ -1,0 +1,15 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite",
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://mini-store-backend.onrender.com/api/$1"
+    }
+  ],
+  "env": {
+    "VITE_API_URL": "https://mini-store-backend.onrender.com/api"
+  }
+}

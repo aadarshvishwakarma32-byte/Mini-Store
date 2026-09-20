@@ -397,7 +397,7 @@ The frontend will start on http://localhost:5173 by default.
 5. Build for production
    bash
    npm run build
-   
+
    📁 Project Structure
    mini-store/
    ├── backend/
@@ -571,7 +571,7 @@ The frontend will start on http://localhost:5173 by default.
    │
    ├── README.md
    └── .gitignore
-   
+
    🗄️ Database Schema
    User Model
    javascript
@@ -706,7 +706,7 @@ The frontend will start on http://localhost:5173 by default.
    createdAt: Date,
    updatedAt: Date
    }
-   
+
    🔌 API Endpoints
    Authentication Routes (/api/auth)
    Method Endpoint Description Auth Required
@@ -796,7 +796,7 @@ The frontend will start on http://localhost:5173 by default.
    Health Check
    Method Endpoint Description
    GET /api/health API health status
-   
+
    ⚙️ Configuration
    Environment Variables
    Backend (.env file)

@@ -32,8 +32,23 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
+// Render (and most PaaS) terminate TLS at a reverse proxy
+app.set('trust proxy', 1);
+
 // --- Global middleware ---
-app.use(cors({ origin: environment.CLIENT_URL, credentials: true }));
+const allowedOrigins = new Set(environment.CLIENT_ORIGINS);
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Allow non-browser clients (curl, server-to-server, health checks)
+      if (!origin || allowedOrigins.has(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(trackActivity);

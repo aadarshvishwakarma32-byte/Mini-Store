@@ -42,8 +42,9 @@ const initiatePayment = async (order, { method, upiId, cardLast4, cardNetwork, b
     merchantOrderId: merchantOrderRef,
     amount: Math.round(order.totalAmount * 100), // paise
     merchantUiVersion: PHONEPE.CLIENT_VERSION,
-    callbackUrl: `${environment.CLIENT_URL}/api/payment/callback`,
-    redirectUrl: `${environment.CLIENT_URL}/payment/success?orderId=${order._id}`,
+    // Gateway callbacks must hit the API (Render), not the Vercel SPA
+    callbackUrl: `${environment.API_PUBLIC_URL}/api/payments/callback`,
+    redirectUrl: `${environment.CLIENT_URL}/orders?orderId=${order._id}&paid=1`,
     redirectMode: 'POST',
     paymentFlow: {
       mode: method === 'upi_qr' ? 'QR_CODE' : 'UPI_COLLECT',

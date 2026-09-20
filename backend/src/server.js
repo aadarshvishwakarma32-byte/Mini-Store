@@ -8,8 +8,10 @@ const { connectDatabase } = require('./config/database');
 const start = async () => {
   await connectDatabase();
 
-  const server = app.listen(environment.PORT, () => {
-    console.log(`Server running in ${environment.NODE_ENV} mode on port ${environment.PORT}`);
+  const server = app.listen(environment.PORT, environment.HOST, () => {
+    console.log(
+      `Server running in ${environment.NODE_ENV} mode on ${environment.HOST}:${environment.PORT}`
+    );
   });
 
   // Graceful shutdown & unhandled error safety nets

@@ -387,7 +387,7 @@ Frontend Setup
 
 # .env file
 
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5000/api
 VITE_API_TIMEOUT=30000 4. Start the development server
 bash
 npm run dev
@@ -835,7 +835,7 @@ Frontend (.env file)
 
 # API Configuration
 
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5000/api
 VITE_API_TIMEOUT=30000 # Request timeout in ms
 Database Connection
 
@@ -909,38 +909,59 @@ npm run seed
 
 🚀 Deployment
 
-Backend (Render)
-1. Push your code to GitHub
-2. Go to [render.com](https://render.com) → New Web Service
-3. Connect your repository
-4. Set the following environment variables in the Render dashboard:
+This project is designed to run as two services:
 
+- **Frontend** → [Vercel](https://vercel.com) (Vite/React)
+- **Backend** → [Render](https://render.com) (Express/Node)
+- **Database** → MongoDB Atlas (or any MongoDB URI)
+
+### 1. Backend on Render
+
+1. Push this repo to GitHub.
+2. On Render → **New → Blueprint** (uses root `render.yaml`) **or** **New Web Service**.
+3. If creating a Web Service manually:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. Set these environment variables:
+
+   ```
    NODE_ENV=production
-   PORT=5000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secure_random_secret
-   CLIENT_URL=https://mini-store-frontend.vercel.app
-   RESEND_API_KEY=your_resend_api_key (optional)
-   PHONEPE_BASE_URL=https://api-preprod.phonepe.com
-   PHONEPE_CLIENT_ID=TEST
-   PHONEPE_CLIENT_VERSION=1
-   PHONEPE_SALT_KEY=TEST_SALT
-   PHONEPE_MERCHANT_ID=TEST_MERCHANT
+   MONGO_URI=your_mongodb_atlas_connection_string
+   JWT_SECRET=a_long_random_secret
+   CLIENT_URL=https://your-frontend.vercel.app
+   API_PUBLIC_URL=https://your-backend.onrender.com
+   ```
 
-5. Set build command: `cd backend && npm install`
-6. Set start command: `cd backend && npm start`
-7. Deploy!
+   Optional: `RESEND_API_KEY`, PhonePe sandbox keys (see `backend/.env.example`).
 
-Frontend (Vercel)
-1. Go to [vercel.com](https://vercel.com) → New Project
-2. Import your repository
-3. Set the following environment variable:
+   Do **not** hardcode `PORT` — Render injects it automatically.
 
-   VITE_API_URL=https://your-render-backend-url/api
+5. After deploy, confirm `https://your-backend.onrender.com/api/health` returns success.
 
-4. Deploy!
+### 2. Frontend on Vercel
 
-Note: The `vercel.json` file in the root automatically rewrites `/api/*` requests to your Render backend.
+1. On Vercel → **Add New Project** → import this repo.
+2. Leave **Root Directory** as the repository root (uses root `vercel.json`), **or** set Root Directory to `frontend` (uses `frontend/vercel.json`).
+3. Add environment variable (Production + Preview):
+
+   ```
+   VITE_API_URL=https://your-backend.onrender.com/api
+   ```
+
+4. Deploy. Then update Render `CLIENT_URL` to your Vercel URL if it changed.
+
+### 3. Wire them together
+
+| Variable | Where | Value |
+| --- | --- | --- |
+| `VITE_API_URL` | Vercel | `https://<render-service>.onrender.com/api` |
+| `CLIENT_URL` | Render | `https://<vercel-app>.vercel.app` (comma-separate extra origins if needed) |
+| `API_PUBLIC_URL` | Render | `https://<render-service>.onrender.com` |
+| `MONGO_URI` | Render | Atlas connection string |
+| `JWT_SECRET` | Render | Strong random string |
+
+Local development: copy `backend/.env.example` → `backend/.env` and `frontend/.env.example` → `frontend/.env`.
 
 🔐 Security Features
 Password Security

@@ -1,31 +1,33 @@
-# Render deployment config for the Mini Store backend
-# Docs: https://render.com/docs/yaml-spec
+# Render Blueprint — deploy the Mini Store API
+# Docs: https://render.com/docs/blueprint-spec
+# Connect this repo on Render and set Root Directory to "." (repo root),
+# or create a Web Service with Root Directory = backend and ignore this file's paths.
 
 services:
   - type: web
     name: mini-store-backend
-    env: node
-    region: oregon
+    runtime: node
     plan: free
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: "5000"
       - key: MONGO_URI
         sync: false
-        note: "Set your MongoDB Atlas connection string here"
       - key: JWT_SECRET
-        sync: false
-        note: "Set a secure random secret"
+        generateValue: true
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: BCRYPT_SALT_ROUNDS
         value: "10"
       - key: CLIENT_URL
-        value: https://mini-store-frontend.vercel.app
+        sync: false
+      - key: API_PUBLIC_URL
+        sync: false
       - key: RESEND_API_KEY
         sync: false
       - key: MAIL_FROM

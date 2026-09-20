@@ -39,7 +39,7 @@ class ApiClient {
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         throw new Error(
-          'Unable to connect to server. Please ensure the backend is running on port 5000.',
+          'Unable to connect to the API. Check that the backend is running and VITE_API_URL is set.',
           { cause: error }
         );
       }

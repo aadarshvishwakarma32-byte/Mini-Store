@@ -6,15 +6,16 @@ const { adminOnly } = require('../middleware/adminMiddleware');
 
 const router = express.Router();
 
-router.use(protect);
+// PhonePe server-to-server callback (no JWT — gateway cannot authenticate)
+router.post('/callback', paymentController.callback);
 
 // User: initiate a PhonePe checkout for an existing order
-router.post('/initiate', paymentController.initiate);
+router.post('/initiate', protect, paymentController.initiate);
 
-// PhonePe callback / verify endpoint (called by gateway or frontend)
-router.post('/verify/:merchantOrderRef', paymentController.verify);
+// PhonePe verify endpoint (called by frontend after redirect)
+router.post('/verify/:merchantOrderRef', protect, paymentController.verify);
 
 // Admin: refund a payment
-router.post('/refund/:paymentId', adminOnly, paymentController.refund);
+router.post('/refund/:paymentId', protect, adminOnly, paymentController.refund);
 
 module.exports = router;

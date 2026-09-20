@@ -3,9 +3,18 @@
 require('dotenv').config();
 const path = require('path');
 
+const parseOrigins = (value) =>
+  (value || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+const clientOrigins = parseOrigins(process.env.CLIENT_URL || 'http://localhost:5173');
+
 const environment = {
   // Server
   PORT: process.env.PORT || 5000,
+  HOST: process.env.HOST || '0.0.0.0',
   NODE_ENV: process.env.NODE_ENV || 'development',
 
   // Database
@@ -19,8 +28,17 @@ const environment = {
   // Bcrypt
   BCRYPT_SALT_ROUNDS: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
 
-  // CORS
-  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  // CORS — CLIENT_URL may be a single origin or a comma-separated list
+  // (e.g. production Vercel URL + preview URLs)
+  CLIENT_URL: clientOrigins[0] || 'http://localhost:5173',
+  CLIENT_ORIGINS: clientOrigins,
+
+  // Public API base URL used for payment gateway callbacks (Render URL)
+  API_PUBLIC_URL:
+    process.env.API_PUBLIC_URL ||
+    process.env.RENDER_EXTERNAL_URL ||
+    `http://localhost:${process.env.PORT || 5000}`,
+
   RESEND_API_KEY: process.env.RESEND_API_KEY || '',
   MAIL_FROM: process.env.MAIL_FROM || 'Mini Store <onboarding@resend.dev>',
 

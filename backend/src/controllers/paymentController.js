@@ -45,6 +45,30 @@ const verify = async (req, res, next) => {
 };
 
 /**
+ * POST /api/payments/callback
+ * PhonePe server-to-server webhook. Accepts merchantOrderId / merchantOrderRef
+ * from JSON or form body and runs the same verification path.
+ */
+const callback = async (req, res, next) => {
+  try {
+    const merchantOrderRef =
+      req.body?.merchantOrderId ||
+      req.body?.merchantOrderRef ||
+      req.body?.transactionId ||
+      req.query?.merchantOrderId;
+
+    if (!merchantOrderRef) {
+      return response.error(res, { message: 'merchantOrderId is required', statusCode: 400 });
+    }
+
+    const result = await paymentService.verifyPayment(String(merchantOrderRef));
+    return response.success(res, { message: 'Payment callback processed', data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * POST /api/payments/refund/:paymentId
  * Admin-only refund flow.
  */
@@ -58,4 +82,4 @@ const refund = async (req, res, next) => {
   }
 };
 
-module.exports = { initiate, verify, refund };
+module.exports = { initiate, verify, callback, refund };

@@ -60,7 +60,12 @@ if (environment.NODE_ENV !== 'test') {
 // Serve uploaded product images statically
 app.use('/uploads', express.static(environment.UPLOAD_PATH));
 
-// --- Health check ---
+// --- Health checks ---
+// Root responds to Render (and other PaaS) probes that hit GET/HEAD /
+app.get('/', (req, res) => {
+  res.status(200).json({ success: true, message: 'Mini Store API is running' });
+});
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ success: true, message: 'API is running' });
 });

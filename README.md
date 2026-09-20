@@ -907,6 +907,41 @@ bash
 cd backend
 npm run seed
 
+🚀 Deployment
+
+Backend (Render)
+1. Push your code to GitHub
+2. Go to [render.com](https://render.com) → New Web Service
+3. Connect your repository
+4. Set the following environment variables in the Render dashboard:
+
+   NODE_ENV=production
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_secure_random_secret
+   CLIENT_URL=https://mini-store-frontend.vercel.app
+   RESEND_API_KEY=your_resend_api_key (optional)
+   PHONEPE_BASE_URL=https://api-preprod.phonepe.com
+   PHONEPE_CLIENT_ID=TEST
+   PHONEPE_CLIENT_VERSION=1
+   PHONEPE_SALT_KEY=TEST_SALT
+   PHONEPE_MERCHANT_ID=TEST_MERCHANT
+
+5. Set build command: `cd backend && npm install`
+6. Set start command: `cd backend && npm start`
+7. Deploy!
+
+Frontend (Vercel)
+1. Go to [vercel.com](https://vercel.com) → New Project
+2. Import your repository
+3. Set the following environment variable:
+
+   VITE_API_URL=https://your-render-backend-url/api
+
+4. Deploy!
+
+Note: The `vercel.json` file in the root automatically rewrites `/api/*` requests to your Render backend.
+
 🔐 Security Features
 Password Security
 Bcryptjs hashing with salt rounds

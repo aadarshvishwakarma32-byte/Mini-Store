@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeContext } from '../theme/ThemeContext.jsx';
 import Cart from './Cart.jsx';
 import { useAuth } from '../hooks/useAuth.js';
-import { CartContext } from '../context/CartContext.js';
 import Logo from './Navbar/Logo.jsx';
 import DeliveryLocation from './Navbar/DeliveryLocation.jsx';
 import CategorySelector from './Navbar/CategorySelector.jsx';
@@ -93,6 +92,7 @@ const Header = () => {
           open={mobileMenuOpen}
           onClose={() => setMobileMenuOpen(false)}
           isAuthenticated={isAuthenticated}
+          isAdmin={user?.role === 'admin'}
           onLogout={handleLogout}
         />
       </header>

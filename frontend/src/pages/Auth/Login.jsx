@@ -30,7 +30,11 @@ const Login = () => {
     try {
       const result = await login(email, password);
       if (result.success) {
-        navigate(from, { replace: true });
+        if (result.user?.role === 'admin') {
+          navigate(from !== '/' ? from : '/admin', { replace: true });
+        } else {
+          navigate(from, { replace: true });
+        }
       } else {
         toast.error(result.message || 'Login failed');
       }

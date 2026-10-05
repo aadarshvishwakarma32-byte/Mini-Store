@@ -17,6 +17,7 @@ const Home = () => {
   // Keep filters in sync with navbar/category links without remounting Home.
   useEffect(() => {
     const params = new URLSearchParams(searchParamsKey);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearch(params.get('search') || '');
     setCategory(params.get('category') || 'All');
   }, [searchParamsKey]);

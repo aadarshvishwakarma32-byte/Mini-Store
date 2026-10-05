@@ -9,6 +9,12 @@ export const adminService = {
 
   createCategory: (data) => api.post('/products/categories', data),
 
+  uploadProductImage: (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    return api.upload('/products/upload-image', formData);
+  },
+
   importWebCatalog: () => api.post('/admin/catalog/import', {}),
 
   getUsers: (params = {}) => {

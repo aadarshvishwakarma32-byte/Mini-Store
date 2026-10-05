@@ -18,7 +18,9 @@ export function CartProvider({ children }) {
   const { isAuthenticated } = useAuth();
 
   const cartItemsRef = useRef(cartItems);
-  cartItemsRef.current = cartItems;
+  useEffect(() => {
+    cartItemsRef.current = cartItems;
+  }, [cartItems]);
 
   const refreshCart = useCallback(async () => {
     if (!isAuthenticated) {
@@ -37,6 +39,7 @@ export function CartProvider({ children }) {
   }, [isAuthenticated]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshCart();
   }, [refreshCart]);
 

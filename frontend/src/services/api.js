@@ -66,9 +66,51 @@ class ApiClient {
     return this.request(endpoint, { method: 'PUT', body });
   }
 
+  upload(endpoint, formData) {
+    const url = `${this.baseURL}${endpoint}`;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const config = {
+      method: 'POST',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: 'include',
+      body: formData,
+    };
+
+    return fetch(url, config).then(async (response) => {
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { message: response.statusText || 'Server error' };
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Upload failed');
+      }
+
+      return data;
+    });
+  }
+
   delete(endpoint) {
     return this.request(endpoint, { method: 'DELETE' });
   }
+}
+
+export function getImageUrl(imagePath) {
+  if (!imagePath) return '';
+  if (
+    imagePath.startsWith('http://') ||
+    imagePath.startsWith('https://') ||
+    imagePath.startsWith('data:') ||
+    imagePath.startsWith('blob:')
+  ) {
+    return imagePath;
+  }
+  const serverOrigin = API_URL.replace(/\/api\/?$/, '');
+  return `${serverOrigin}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 }
 
 export const api = new ApiClient();

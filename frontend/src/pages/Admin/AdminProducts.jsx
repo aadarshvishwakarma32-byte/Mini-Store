@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { adminService } from '../../services/admin.service.js';
 import { productService } from '../../services/product.service.js';
+import { getImageUrl } from '../../services/api.js';
 import { toast } from 'sonner';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -47,6 +50,47 @@ const AdminProducts = () => {
     loadProducts();
     loadCategories();
   }, []);
+
+  const handleImageFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (PNG, JPG, JPEG, WEBP)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const response = await adminService.uploadProductImage(file);
+      const imagePath = response.data?.image || response.image;
+      if (imagePath) {
+        setFormData((prev) => ({ ...prev, image: imagePath }));
+        toast.success('Image uploaded successfully');
+      } else {
+        toast.error('Failed to get uploaded image path');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Image upload failed');
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({ ...prev, image: '' }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -209,14 +253,58 @@ const AdminProducts = () => {
               </div>
 
               <div className="field fullWidth">
-                <label className="labelText">Image URLs (comma separated)</label>
-                <input
-                  type="text"
-                  className="input"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="https://example.com/image.png"
-                />
+                <label className="labelText">Product Image</label>
+                <div className="imageUploadWrap">
+                  <div className="imageUploadControls">
+                    <label className="fileUploadBtn">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/png, image/jpeg, image/jpg, image/webp"
+                        onChange={handleImageFileChange}
+                        disabled={uploadingImage}
+                      />
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      {uploadingImage ? 'Uploading Image...' : 'Choose / Upload Image'}
+                    </label>
+                    <span className="imageOrText">or enter URL</span>
+                    <input
+                      type="text"
+                      className="input"
+                      style={{ flex: 1, minWidth: '220px' }}
+                      value={formData.image}
+                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                      placeholder="https://example.com/image.png or /uploads/..."
+                    />
+                  </div>
+
+                  {formData.image && (
+                    <div className="imagePreviewBox">
+                      <img
+                        className="imagePreviewImg"
+                        src={getImageUrl(formData.image)}
+                        alt="Product preview"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png';
+                        }}
+                      />
+                      <div className="imagePreviewInfo">
+                        <div className="imagePreviewPath">{formData.image}</div>
+                      </div>
+                      <button
+                        type="button"
+                        className="imageRemoveBtn"
+                        onClick={handleRemoveImage}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="field fullWidth">
@@ -281,7 +369,7 @@ const AdminProducts = () => {
           <table className="productTable">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Product</th>
                 <th>Category</th>
                 <th>Price</th>
                 <th>Stock</th>
@@ -292,7 +380,19 @@ const AdminProducts = () => {
             <tbody>
               {products.map((product) => (
                 <tr key={product._id}>
-                  <td>{product.title}</td>
+                  <td>
+                    <div className="productTableProduct">
+                      <img
+                        className="productTableThumb"
+                        src={getImageUrl(product.image || product.images?.[0])}
+                        alt={product.title}
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png';
+                        }}
+                      />
+                      <span>{product.title}</span>
+                    </div>
+                  </td>
                   <td>{product.category?.name || '-'}</td>
                   <td>₹{product.price}</td>
                   <td>{product.stock}</td>

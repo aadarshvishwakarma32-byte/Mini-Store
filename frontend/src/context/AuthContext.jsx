@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
         }
         setUser(response.data.user);
         toast.success('Welcome back!');
-        return { success: true };
+        return { success: true, user: response.data.user };
       }
       return { success: false, message: response.message || 'Login failed' };
     } catch (error) {

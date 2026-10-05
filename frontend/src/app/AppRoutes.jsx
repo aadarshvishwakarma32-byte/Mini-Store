@@ -20,6 +20,7 @@ import Profile from '../pages/Auth/Profile.jsx';
 import Settings from '../pages/Auth/Settings.jsx';
 import Wishlist from '../pages/Auth/Wishlist.jsx';
 import AdminProducts from '../pages/Admin/AdminProducts.jsx';
+import AdminOrders from '../pages/Admin/AdminOrders.jsx';
 import AdminDashboard from '../pages/Admin/AdminDashboard.jsx';
 import AdminUsers from '../pages/Admin/AdminUsers.jsx';
 import AdminSettings from '../pages/Admin/AdminSettings.jsx';
@@ -120,6 +121,7 @@ function AppRoutes() {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="products" element={<AdminProducts />} />
+        <Route path="orders" element={<AdminOrders />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="monitoring" element={<AdminMonitoring />} />

@@ -95,21 +95,21 @@ function AdminDashboard() {
       </div>
 
       <div className="adminStatsGrid">
-        <article className="adminStatCard">
+        <Link to="/admin/products" className="adminStatCard adminStatCardLink">
           <span>Products</span>
           <strong>{products.length}</strong>
-          <small>Active catalog items</small>
-        </article>
+          <small>Active catalog items →</small>
+        </Link>
         <article className="adminStatCard">
           <span>Categories</span>
           <strong>{categories.length}</strong>
           <small>Store departments</small>
         </article>
-        <article className="adminStatCard">
+        <Link to="/admin/orders" className="adminStatCard adminStatCardLink">
           <span>Orders</span>
           <strong>{orders.length}</strong>
-          <small>{pendingOrders} awaiting processing</small>
-        </article>
+          <small>{pendingOrders} awaiting processing →</small>
+        </Link>
         <article className="adminStatCard">
           <span>Inventory value</span>
           <strong>{formatCurrency(inventoryValue)}</strong>

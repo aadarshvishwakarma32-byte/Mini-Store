@@ -2,6 +2,7 @@ import { useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.js';
 import { useWishlist } from '../hooks/useWishlist.js';
+import { getImageUrl } from '../services/api.js';
 
 const round2 = (n) => Math.round(n * 100) / 100;
 
@@ -14,9 +15,9 @@ const ProductCard = ({ product }) => {
   const productId = product._id || product.id;
   const title = product.name || product.title || 'Untitled Product';
   const fallbackImage = 'https://cdn-icons-png.flaticon.com/512/3081/3081558.png';
-  const [image, setImage] = useState(
-    (Array.isArray(product.images) && product.images[0]) || product.image || fallbackImage
-  );
+  const rawImage =
+    (Array.isArray(product.images) && product.images[0]) || product.image || fallbackImage;
+  const [image, setImage] = useState(getImageUrl(rawImage) || fallbackImage);
   const categoryName =
     typeof product.category === 'object' && product.category !== null
       ? product.category.name || ''

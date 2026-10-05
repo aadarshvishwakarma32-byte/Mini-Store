@@ -12,6 +12,9 @@ function AdminLayout() {
           <NavLink className="adminLink" to="/admin/products">
             Products
           </NavLink>
+          <NavLink className="adminLink" to="/admin/orders">
+            Orders
+          </NavLink>
           <NavLink className="adminLink" to="/admin/users">
             Users & roles
           </NavLink>

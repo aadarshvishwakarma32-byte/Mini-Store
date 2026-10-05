@@ -16,7 +16,7 @@ const CloseIcon = () => (
   </svg>
 );
 
-const MobileMenu = ({ open, onClose, isAuthenticated, onLogout }) => {
+const MobileMenu = ({ open, onClose, isAuthenticated, isAdmin, onLogout }) => {
   const handleNavClick = () => {
     onClose();
   };
@@ -59,6 +59,11 @@ const MobileMenu = ({ open, onClose, isAuthenticated, onLogout }) => {
               </NavLink>
               {isAuthenticated ? (
                 <>
+                  {isAdmin && (
+                    <NavLink to="/admin" className="mobileLink" onClick={handleNavClick}>
+                      Admin Panel
+                    </NavLink>
+                  )}
                   <NavLink to="/profile" className="mobileLink" onClick={handleNavClick}>
                     Profile
                   </NavLink>

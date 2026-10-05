@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.js';
+import { getImageUrl } from '../services/api.js';
 
 const round2 = (n) => Math.round(n * 100) / 100;
 
@@ -33,11 +34,11 @@ const Cart = ({ onClose }) => {
               <div key={item.productId} className="cartItem">
                 <img
                   className="cartThumb"
-                  src={
+                  src={getImageUrl(
                     item.product?.image ||
                     item.product?.images?.[0] ||
                     'https://cdn-icons-png.flaticon.com/512/3081/3081558.png'
-                  }
+                  )}
                   alt={item.product?.name || item.product?.title || 'Product'}
                 />
 

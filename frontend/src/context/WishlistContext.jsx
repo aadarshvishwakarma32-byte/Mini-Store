@@ -11,7 +11,9 @@ export function WishlistProvider({ children }) {
   const { isAuthenticated } = useAuth();
 
   const wishlistIdsRef = useRef(wishlistIds);
-  wishlistIdsRef.current = wishlistIds;
+  useEffect(() => {
+    wishlistIdsRef.current = wishlistIds;
+  }, [wishlistIds]);
 
   const refreshWishlist = useCallback(async () => {
     if (!isAuthenticated) {
@@ -35,6 +37,7 @@ export function WishlistProvider({ children }) {
   }, [isAuthenticated]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshWishlist();
   }, [refreshWishlist]);
 
